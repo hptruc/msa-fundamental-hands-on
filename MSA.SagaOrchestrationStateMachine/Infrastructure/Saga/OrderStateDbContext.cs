@@ -1,7 +1,7 @@
 using MassTransit.EntityFrameworkCoreIntegration;
 using Microsoft.EntityFrameworkCore;
 
-namespace MSA.OrderService.Infrastructure.Saga;
+namespace MSA.SagaOrchestrationStateMachine.Infrastructure.Saga;
 
 public class OrderStateDbContext(DbContextOptions<OrderStateDbContext> options) : SagaDbContext(options)
 {

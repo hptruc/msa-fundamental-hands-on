@@ -20,6 +20,10 @@ builder.Services
         {
             policy.RequireClaim("scope", "productapi.read");
         });
+        opt.AddPolicy("write_access", policy =>
+        {
+            policy.RequireClaim("scope", "productapi.write");
+        });
     });
 
 builder.Services.AddControllers(options =>

@@ -89,6 +89,8 @@ services:
       - ASPNETCORE_ENVIRONMENT=Development
       - ReverseProxy__Clusters__identityApiCluster__Destinations__destination1__Address=https://identity-service:5001/
       - ReverseProxy__Clusters__productApiCluster__Destinations__destination1__Address=https://product-service:5002/
+      - ReverseProxy__Clusters__orderApiCluster__Destinations__destination1__Address=https://order-service:5003/
+      - ReverseProxy__Clusters__paymentApiCluster__Destinations__destination1__Address=https://bank-service:5004/
       - ASPNETCORE_URLS=https://+:8080;http://+:18080
       - Kestrel__Certificates__Default__Password=MsaFundamental
       - Kestrel__Certificates__Default__Path=https/localhost.pfx
@@ -99,6 +101,67 @@ services:
     ports:
       - "8080:8080"
       - "18080:18080"
+    restart: always
+    networks:
+      - msa-network
+
+  order-service:
+    image: order-service:latest
+    build:
+      context: .
+      dockerfile: ./MSA.OrderService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - PostgresDBSetting__ConnectionString=User ID=guest;Password=guest;Server=postgresql;Port=5432;Database=msapostgres
+      - ASPNETCORE_URLS=https://+:5003
+      - RabbitMQSetting__Host=rabbitmq
+      - ServiceUrlsSetting__IdentityServiceUrl=https://identity-service:5001
+      - ServiceUrlsSetting__ProductServiceUrl=https://product-service:5002
+      - ServiceUrlsSetting__BankServiceUrl=https://bank-service:5004
+      - Kestrel__Certificates__Default__Password=MsaFundamental
+      - Kestrel__Certificates__Default__Path=https/localhost.pfx
+    volumes:
+      - ./aspnet/https:/app/https:ro
+      - /usr/local/share/ca-certificates:/usr/local/share/ca-certificates
+      - /etc/ssl/certs:/etc/ssl/certs
+    ports:
+      - "5003:5003"
+    restart: always
+    networks:
+      - msa-network
+
+  bank-service:
+    image: bank-service:latest
+    build:
+      context: .
+      dockerfile: ./MSA.BankService/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - PostgresDBSetting__ConnectionString=User ID=guest;Password=guest;Server=postgresql;Port=5432;Database=msabankpostgres
+      - ASPNETCORE_URLS=https://+:5004
+      - RabbitMQSetting__Host=rabbitmq
+      - ServiceUrlsSetting__IdentityServiceUrl=https://identity-service:5001
+      - Kestrel__Certificates__Default__Password=MsaFundamental
+      - Kestrel__Certificates__Default__Path=https/localhost.pfx
+    volumes:
+      - ./aspnet/https:/app/https:ro
+      - /usr/local/share/ca-certificates:/usr/local/share/ca-certificates
+      - /etc/ssl/certs:/etc/ssl/certs
+    ports:
+      - "5004:5004"
+    restart: always
+    networks:
+      - msa-network
+
+  saga-orchestration-state-machine-service:
+    image: saga-orchestration-state-machine-service:latest
+    build:
+      context: .
+      dockerfile: ./MSA.SagaOrchestrationStateMachine/Dockerfile
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - SqliteDBSetting__ConnectionString=Data Source=StateMachine.sqlite
+      - RabbitMQSetting__Host=rabbitmq
     restart: always
     networks:
       - msa-network

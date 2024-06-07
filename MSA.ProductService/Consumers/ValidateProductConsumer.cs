@@ -1,5 +1,5 @@
 using MassTransit;
-using MSA.Common.Contracts.Domain.Commands.Product;
+using MSA.Common.Contracts.Commands.Product;
 
 namespace MSA.ProductService.Consumers;
 

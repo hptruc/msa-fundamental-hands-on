@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSA.Common.Security", "MSA.
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSA.ReverseProxy", "MSA.ReverseProxy\MSA.ReverseProxy.csproj", "{DB3A0FAD-B020-4320-AD95-2B5BEBF31ADD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSA.BankService", "MSA.BankService\MSA.BankService.csproj", "{A42833CF-9C30-4CC5-96AF-F28A75D62CBC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MSA.SagaOrchestrationStateMachine", "MSA.SagaOrchestrationStateMachine\MSA.SagaOrchestrationStateMachine.csproj", "{6CFD2D63-26A6-4A0F-8548-D8A763465AE0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -60,5 +64,13 @@ Global
 		{DB3A0FAD-B020-4320-AD95-2B5BEBF31ADD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DB3A0FAD-B020-4320-AD95-2B5BEBF31ADD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{DB3A0FAD-B020-4320-AD95-2B5BEBF31ADD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A42833CF-9C30-4CC5-96AF-F28A75D62CBC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A42833CF-9C30-4CC5-96AF-F28A75D62CBC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A42833CF-9C30-4CC5-96AF-F28A75D62CBC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A42833CF-9C30-4CC5-96AF-F28A75D62CBC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6CFD2D63-26A6-4A0F-8548-D8A763465AE0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6CFD2D63-26A6-4A0F-8548-D8A763465AE0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6CFD2D63-26A6-4A0F-8548-D8A763465AE0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6CFD2D63-26A6-4A0F-8548-D8A763465AE0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

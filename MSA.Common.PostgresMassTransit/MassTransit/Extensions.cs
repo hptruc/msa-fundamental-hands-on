@@ -9,7 +9,8 @@ namespace MSA.Common.PostgresMassTransit.MassTransit;
 
 public static class Extensions
 {
-    public static IServiceCollection AddMassTransitWithRabbitMQ(this IServiceCollection services)
+    public static IServiceCollection AddMassTransitWithRabbitMQ(this IServiceCollection services, 
+        Action<IBusRegistrationConfigurator>? furtherConfig = null)
     {
         services.AddMassTransit(configure =>
         {
@@ -30,6 +31,8 @@ public static class Extensions
                     retryPoilicy.Interval(3, TimeSpan.FromSeconds(10));
                 });
             });
+
+            furtherConfig?.Invoke(configure);
         });
 
         return services;

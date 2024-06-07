@@ -1,4 +1,4 @@
-namespace MSA.Common.Contracts.Domain.Commands.Product;
+namespace MSA.Common.Contracts.Commands.Product;
 
 public record ValidateProduct
 {

@@ -10,6 +10,6 @@ public class ValidateProductSagaConsumer(ILogger<ValidateProductSagaConsumer> lo
         await Task.Yield();
 
         var message = context.Message;
-        logger.Log(LogLevel.Information, $"[Saga] Receiving message of order {message.OrderId} validating product {message.ProductId}");
+        logger.Log(LogLevel.Information, $"[Saga] Receiving message of order {message.OrderId}.");
     }
 }

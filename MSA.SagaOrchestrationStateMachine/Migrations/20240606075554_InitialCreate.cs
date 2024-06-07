@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace MSA.OrderService.Migrations.OrderStateDb
+namespace MSA.SagaOrchestrationStateMachine.Migrations
 {
     /// <inheritdoc />
     public partial class InitialCreate : Migration
@@ -15,12 +15,11 @@ namespace MSA.OrderService.Migrations.OrderStateDb
                 name: "OrderState",
                 columns: table => new
                 {
-                    CorrelationId = table.Column<Guid>(type: "uuid", nullable: false),
-                    OrderId = table.Column<Guid>(type: "uuid", nullable: true),
-                    PaymentId = table.Column<Guid>(type: "uuid", nullable: true),
-                    Reason = table.Column<string>(type: "text", nullable: true),
-                    ProductValidationId = table.Column<Guid>(type: "uuid", nullable: true),
-                    CurrentState = table.Column<string>(type: "character varying(64)", maxLength: 64, nullable: true)
+                    CorrelationId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    OrderId = table.Column<Guid>(type: "TEXT", nullable: false),
+                    PaymentId = table.Column<Guid>(type: "TEXT", nullable: true),
+                    Reason = table.Column<string>(type: "TEXT", nullable: true),
+                    CurrentState = table.Column<string>(type: "TEXT", maxLength: 64, nullable: true)
                 },
                 constraints: table =>
                 {

@@ -1,9 +1,9 @@
 using MassTransit;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
-using MSA.OrderService.StateMachine;
+using MSA.SagaOrchestrationStateMachine.StateMachine;
 
-namespace MSA.OrderService.Infrastructure.Saga;
+namespace MSA.SagaOrchestrationStateMachine.Infrastructure.Saga;
 
 public class OrderStateMap : SagaClassMap<OrderState>
 {

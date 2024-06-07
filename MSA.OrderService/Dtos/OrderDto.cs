@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
+
 namespace MSA.OrderService.Dtos;
 
 public record CreateOrderDto
 (
     Guid UserId,
-    Guid ProductId
+    List<Guid> ProductIds
 );

@@ -16,6 +16,8 @@ namespace MSA.IdentityService.DummyData
                 new ApiScope("productapi.write"),
                 new ApiScope("orderapi.read"),
                 new ApiScope("orderapi.write"),
+                new ApiScope("paymentapi.read"),
+                new ApiScope("paymentapi.write"),
             ];
 
         public static IEnumerable<ApiResource> ApiResources =>
@@ -29,6 +31,12 @@ namespace MSA.IdentityService.DummyData
             new ApiResource("orderapi")
             {
                 Scopes = ["orderapi.read", "orderapi.write"],
+                ApiSecrets = [new Secret("Scopesecret".Sha256())],
+                UserClaims = ["role"]
+            },
+            new ApiResource("paymentapi")
+            {
+                Scopes = ["paymentapi.read", "paymentapi.write"],
                 ApiSecrets = [new Secret("Scopesecret".Sha256())],
                 UserClaims = ["role"]
             }
@@ -49,7 +57,9 @@ namespace MSA.IdentityService.DummyData
                         "productapi.read",
                         "productapi.write",
                         "orderapi.read",
-                        "orderapi.write"
+                        "orderapi.write",
+                        "paymentapi.read",
+                        "paymentapi.write"
                     }
                 },
 
@@ -82,7 +92,37 @@ namespace MSA.IdentityService.DummyData
                     AllowedCorsOrigins = { "https://localhost:5002" },
 
                     AllowOfflineAccess = true,
-                    AllowedScopes = { "openid", "profile", "productapi.read", "productapi.write" }
+                    AllowedScopes = { "openid", "profile", "productapi.read", "productapi.write" },
+
+                    AlwaysIncludeUserClaimsInIdToken = true
+                },
+                new Client
+                {
+                    ClientId = "payment-swagger",
+                    RequireClientSecret = false,
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = false,
+
+                    RedirectUris = { "https://localhost:5004/swagger/oauth2-redirect.html" },
+                    AllowedCorsOrigins = { "https://localhost:5004" },
+
+                    AllowOfflineAccess = true,
+                    AllowedScopes = { "openid", "profile", "paymentapi.read", "paymentapi.write" }
+                },
+                new Client
+                {
+                    ClientId = "order-swagger",
+                    RequireClientSecret = false,
+
+                    AllowedGrantTypes = GrantTypes.Code,
+                    RequirePkce = false,
+
+                    RedirectUris = { "https://localhost:5003/swagger/oauth2-redirect.html" },
+                    AllowedCorsOrigins = { "https://localhost:5003" },
+
+                    AllowOfflineAccess = true,
+                    AllowedScopes = { "openid", "profile", "orderapi.read", "orderapi.write", "paymentapi.read", "paymentapi.write", "productapi.read" }
                 }
             ];
     }

@@ -4,58 +4,63 @@ using MSA.OrderService.Infrastructure.Data;
 using MSA.OrderService.Dtos;
 using MSA.Common.Contracts.Domain;
 using MSA.Common.PostgresMassTransit.PostgresDB;
-using MSA.OrderService.Services;
 using MassTransit;
-//using MSA.Common.Contracts.Domain.Commands.Product;
 using MSA.Common.Contracts.Domain.Events.Order;
+using MSA.Common.Contracts.Application.Common.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace MSA.OrderService.Controllers;
 
 [ApiController]
 [Route("v1/order")]
-public class OrderController(IRepository<Order> repository,PostgresUnitOfWork<MainDbContext> uow, 
-    //IProductService productService,
-    //ISendEndpointProvider sendEndpointProvider,
+[Authorize]
+public class OrderController(IRepository<Order> repository, PostgresUnitOfWork<MainDbContext> uow, 
     IPublishEndpoint publishEndpoint) : ControllerBase
 {
     [HttpGet]
+    [Authorize("read_access")]
     public async Task<IEnumerable<Order>> GetAsync()
     {
         var orders = (await repository.GetAllAsync()).ToList();
         return orders;
     }
 
+    [HttpGet("{id}")]
+    [Authorize("read_access")]
+    public async Task<ActionResult<Order>> GetByIdAsync(Guid id)
+    {
+        var order = await repository.GetAsync(id);
+        if (order is null)
+        {
+            return Ok();
+        }
+        return order;
+    }
+
     [HttpPost]
+    [Authorize("write_access")]
     public async Task<ActionResult<Order>> PostAsync(CreateOrderDto createOrderDto)
     {
-        //var isProductExisted = await productService.IsProductExisted(createOrderDto.ProductId);
-        //if (!isProductExisted) return BadRequest();
-
         var order = new Order { 
-            Id = Guid.NewGuid(),
             UserId = createOrderDto.UserId,
-            OrderStatus = "Order Submitted"
+            OrderStatus = "Submitted"
         };
+
         await repository.CreateAsync(order);
 
-        // Async validate
-        // var endpoint = await sendEndpointProvider.GetSendEndpoint(
-        //     new Uri("queue:product-validate-product")
-        // );
-        //
-        // await endpoint.Send(new ValidateProduct{
-        //     OrderId = order.Id,
-        //     ProductId = createOrderDto.ProductId
-        // });
-
         // Async Orchestrator
-        await publishEndpoint.Publish<OrderSubmitted>(
+        await publishEndpoint.Publish(
             new OrderSubmitted {
                 OrderId = order.Id,
-                ProductId = createOrderDto.ProductId
+                ProductIds = createOrderDto.ProductIds,
+                Amount = new Random().Next(0, 101),
+                UserIdentity = new UserIdentityModel
+                { 
+                    AccessToken = HttpContext.Request.Headers.Authorization.ToString() 
+                }
             });
 
-        await uow.SaveChangeAsync();
+        await uow.SaveChangeAsync(); 
 
         return CreatedAtAction(nameof(PostAsync), order);
     }
