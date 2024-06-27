@@ -4,7 +4,7 @@ This repository contains a hands-on project demonstrating a microservices archit
 
 # Communication between ProductService, OrderService and BankService
 ## Workflow
-![alt text](https://raw.githubusercontent.com/hptruc/msa-fundamental-hands-on/main/Resources/workflow.png)
+![alt text](https://github.com/hptruc/msa-fundamental-hands-on/blob/main/Resources/workflow.png?raw=true)
 
 ## Communication: Saga Orchestration State Machine
 ### Description
