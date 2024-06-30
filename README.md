@@ -2,6 +2,9 @@
 
 This repository contains a hands-on project demonstrating a microservices architecture using .NET 8. The project is structured around several services including Product, Order, Bank, Identity, and Gateway services. Communication between these services is managed using RabbitMQ with MassTransit, and we implement the transactional outbox pattern/saga pattern to ensure data consistency and reliable operations.
 
+# High Level Architecture
+![alt text](https://github.com/hptruc/msa-fundamental-hands-on/blob/main/Resources/high_level_architecture.png?raw=true)
+
 # Communication between ProductService, OrderService and BankService
 ## Workflow
 ![alt text](https://github.com/hptruc/msa-fundamental-hands-on/blob/main/Resources/workflow.png?raw=true)
